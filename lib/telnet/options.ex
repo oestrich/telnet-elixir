@@ -151,47 +151,17 @@ defmodule Telnet.Options do
   @doc """
   Transform IAC binary data to actionable terms
 
-      iex> Options.transform(<<255, 253, 42>>)
-      {:do, :charset}
-
-      iex> Options.transform(<<255, 253, 24>>)
-      {:do, :term_type}
-
-      iex> Options.transform(<<255, 253, 34>>)
-      {:do, :line_mode}
-
-      iex> Options.transform(<<255, 253, 201>>)
-      {:do, :gmcp}
-
-      iex> Options.transform(<<255, 251, 42>>)
-      {:will, :charset}
-
-      iex> Options.transform(<<255, 251, 70>>)
-      {:will, :mssp}
-
-      iex> Options.transform(<<255, 252, 70>>)
-      {:wont, :mssp}
-
-      iex> Options.transform(<<255, 251, 201>>)
-      {:will, :gmcp}
-
       iex> Options.transform(<<255, 251, 1>>)
       {:will, :echo}
 
       iex> Options.transform(<<255, 252, 1>>)
       {:wont, :echo}
 
-      iex> Options.transform(<<255, 251, 165>>)
-      {:will, :oauth}
+      iex> Options.transform(<<255, 253, 1>>)
+      {:do, :echo}
 
-      iex> Options.transform(<<255, 252, 165>>)
-      {:wont, :oauth}
-
-      iex> Options.transform(<<255, 253, 165>>)
-      {:do, :oauth}
-
-      iex> Options.transform(<<255, 254, 165>>)
-      {:dont, :oauth}
+      iex> Options.transform(<<255, 254, 1>>)
+      {:dont, :echo}
 
   Returns a generic DO/WILL if the specific term is not known. For
   responding with the opposite command to reject.
