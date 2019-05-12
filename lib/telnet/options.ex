@@ -29,22 +29,6 @@ defmodule Telnet.Options do
   @charset_request 1
   @term_type_send 1
 
-  def mssp_data?(options) do
-    Enum.any?(options, fn option ->
-      match?({:mssp, _}, option)
-    end)
-  end
-
-  def text_mssp?(string) do
-    string =~ "MSSP-REPLY-START"
-  end
-
-  def get_mssp_data(options) do
-    Enum.find(options, fn option ->
-      match?({:mssp, _}, option)
-    end)
-  end
-
   @doc """
   Parse binary data from a MUD into any telnet options found and known
   """
