@@ -212,43 +212,13 @@ defmodule Telnet.Options do
       iex> Options.transform(<<255>>)
       :unknown
   """
-  def transform(<<@iac, @iac_do, @term_type>>), do: {:do, :term_type}
+  def transform(<<@iac, @will, byte>>), do: {:will, byte_to_option(byte)}
 
-  def transform(<<@iac, @iac_do, @line_mode>>), do: {:do, :line_mode}
+  def transform(<<@iac, @wont, byte>>), do: {:wont, byte_to_option(byte)}
 
-  def transform(<<@iac, @iac_do, @charset>>), do: {:do, :charset}
+  def transform(<<@iac, @iac_do, byte>>), do: {:do, byte_to_option(byte)}
 
-  def transform(<<@iac, @iac_do, @oauth>>), do: {:do, :oauth}
-
-  def transform(<<@iac, @iac_do, @gmcp>>), do: {:do, :gmcp}
-
-  def transform(<<@iac, @iac_do, @mssp>>), do: {:do, :mssp}
-
-  def transform(<<@iac, @iac_do, byte>>), do: {:do, byte}
-
-  def transform(<<@iac, @dont, @oauth>>), do: {:dont, :oauth}
-
-  def transform(<<@iac, @dont, byte>>), do: {:dont, byte}
-
-  def transform(<<@iac, @will, @echo>>), do: {:will, :echo}
-
-  def transform(<<@iac, @will, @mssp>>), do: {:will, :mssp}
-
-  def transform(<<@iac, @will, @oauth>>), do: {:will, :oauth}
-
-  def transform(<<@iac, @will, @gmcp>>), do: {:will, :gmcp}
-
-  def transform(<<@iac, @will, @charset>>), do: {:will, :charset}
-
-  def transform(<<@iac, @will, byte>>), do: {:will, byte}
-
-  def transform(<<@iac, @wont, @echo>>), do: {:wont, :echo}
-
-  def transform(<<@iac, @wont, @mssp>>), do: {:wont, :mssp}
-
-  def transform(<<@iac, @wont, @oauth>>), do: {:wont, :oauth}
-
-  def transform(<<@iac, @wont, byte>>), do: {:wont, byte}
+  def transform(<<@iac, @dont, byte>>), do: {:dont, byte_to_option(byte)}
 
   def transform(<<@iac, @sb, @mssp, data::binary>>) do
     case MSSP.parse(<<@iac, @sb, @mssp, data::binary>>) do
@@ -313,4 +283,42 @@ defmodule Telnet.Options do
   def parse_charset(<<byte::size(8), data::binary>>) do
     <<byte>> <> parse_charset(data)
   end
+
+  @doc """
+  Convert a byte to a known option, or leave as as the byte
+  """
+  def byte_to_option(@echo), do: :echo
+
+  def byte_to_option(@term_type), do: :term_type
+
+  def byte_to_option(@line_mode), do: :line_mode
+
+  def byte_to_option(@charset), do: :charset
+
+  def byte_to_option(@mssp), do: :mssp
+
+  def byte_to_option(@oauth), do: :oauth
+
+  def byte_to_option(@gmcp), do: :gmcp
+
+  def byte_to_option(byte), do: byte
+
+  @doc """
+  Convert a known option back to a byte or pass through the byte
+  """
+  def option_to_byte(:echo), do: @echo
+
+  def option_to_byte(@term_type), do: :term_type
+
+  def option_to_byte(@line_mode), do: :line_mode
+
+  def option_to_byte(@charset), do: :charset
+
+  def option_to_byte(@mssp), do: :mssp
+
+  def option_to_byte(@oauth), do: :oauth
+
+  def option_to_byte(@gmcp), do: :gmcp
+
+  def option_to_byte(byte), do: byte
 end
