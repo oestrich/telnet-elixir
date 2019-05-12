@@ -287,6 +287,30 @@ defmodule Telnet.Options do
 
   @doc """
   Convert a byte to a known option, or leave as as the byte
+
+      iex> Options.byte_to_option(1)
+      :echo
+
+      iex> Options.byte_to_option(24)
+      :term_type
+
+      iex> Options.byte_to_option(34)
+      :line_mode
+
+      iex> Options.byte_to_option(39)
+      :new_environ
+
+      iex> Options.byte_to_option(42)
+      :charset
+
+      iex> Options.byte_to_option(70)
+      :mssp
+
+      iex> Options.byte_to_option(165)
+      :oauth
+
+      iex> Options.byte_to_option(201)
+      :gmcp
   """
   def byte_to_option(@echo), do: :echo
 
@@ -308,6 +332,30 @@ defmodule Telnet.Options do
 
   @doc """
   Convert a known option back to a byte or pass through the byte
+
+      iex> Options.option_to_byte(:echo)
+      1
+
+      iex> Options.option_to_byte(:term_type)
+      24
+
+      iex> Options.option_to_byte(:line_mode)
+      34
+
+      iex> Options.option_to_byte(:new_environ)
+      39
+
+      iex> Options.option_to_byte(:charset)
+      42
+
+      iex> Options.option_to_byte(:mssp)
+      70
+
+      iex> Options.option_to_byte(:oauth)
+      165
+
+      iex> Options.option_to_byte(:gmcp)
+      201
   """
   def option_to_byte(:echo), do: @echo
 
