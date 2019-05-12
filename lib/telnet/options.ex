@@ -20,6 +20,7 @@ defmodule Telnet.Options do
   @echo 1
   @term_type 24
   @line_mode 34
+  @new_environ 39
   @charset 42
   @mssp 70
   @oauth 165
@@ -293,6 +294,8 @@ defmodule Telnet.Options do
 
   def byte_to_option(@line_mode), do: :line_mode
 
+  def byte_to_option(@new_environ), do: :new_environ
+
   def byte_to_option(@charset), do: :charset
 
   def byte_to_option(@mssp), do: :mssp
@@ -308,17 +311,19 @@ defmodule Telnet.Options do
   """
   def option_to_byte(:echo), do: @echo
 
-  def option_to_byte(@term_type), do: :term_type
+  def option_to_byte(:term_type), do: @term_type
 
-  def option_to_byte(@line_mode), do: :line_mode
+  def option_to_byte(:line_mode), do: @line_mode
 
-  def option_to_byte(@charset), do: :charset
+  def option_to_byte(:new_environ), do: @new_environ
 
-  def option_to_byte(@mssp), do: :mssp
+  def option_to_byte(:charset), do: @charset
 
-  def option_to_byte(@oauth), do: :oauth
+  def option_to_byte(:mssp), do: @mssp
 
-  def option_to_byte(@gmcp), do: :gmcp
+  def option_to_byte(:oauth), do: @oauth
+
+  def option_to_byte(:gmcp), do: @gmcp
 
   def option_to_byte(byte), do: byte
 end
