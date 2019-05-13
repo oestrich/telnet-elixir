@@ -44,6 +44,35 @@ defmodule Telnet.NewEnviron do
   end
 
   @doc """
+  Encode a list of variables to request from the server
+
+      iex> NewEnviron.encode(:send, ["IPADDRESS"])
+      <<255, 250, 39, 1, 0>> <> "IPADDRESS" <> <<255, 240>>
+
+      iex> NewEnviron.encode(:is, [{"IPADDRESS", "localhost"}])
+      <<255, 250, 39, 0, 0>> <> "IPADDRESS" <> <<1>> <> "localhost" <> <<255, 240>>
+  """
+  def encode(direction, data)
+
+  def encode(:send, variables) do
+    data =
+      Enum.reduce(variables, <<>>, fn variable, data ->
+        data <> <<0>> <> variable
+      end)
+
+    <<@iac, @sb, @new_environ, @send>> <> data <> <<@iac, @se>>
+  end
+
+  def encode(:is, variables) do
+    data =
+      Enum.reduce(variables, <<>>, fn {variable, value}, data ->
+        data <> <<0>> <> variable <> <<1>> <> value
+      end)
+
+    <<@iac, @sb, @new_environ, @is>> <> data <> <<@iac, @se>>
+  end
+
+  @doc """
   Strip the final IAC SE
   """
   def strip(<<>>), do: <<>>
