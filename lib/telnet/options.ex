@@ -5,6 +5,7 @@ defmodule Telnet.Options do
 
   alias Telnet.GMCP
   alias Telnet.MSSP
+  alias Telnet.NewEnviron
   alias Telnet.OAuth
 
   @se 240
@@ -208,6 +209,19 @@ defmodule Telnet.Options do
     case GMCP.parse(data) do
       {:ok, module, data} ->
         {:gmcp, module, data}
+
+      :error ->
+        :unknown
+    end
+  end
+
+  def transform(<<@iac, @sb, @new_environ, data::binary>>) do
+    case NewEnviron.parse(<<@iac, @sb, @new_environ>> <> data) do
+      {:send, data} ->
+        {:new_environ, :send, data}
+
+      {:is, data} ->
+        {:new_environ, :is, data}
 
       :error ->
         :unknown

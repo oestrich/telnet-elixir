@@ -78,4 +78,16 @@ defmodule Telnet.OptionsTest do
       {:charset, :request, " ", "UTF-8"} = Options.transform(option)
     end
   end
+
+  describe "new environ" do
+    test "parsing a request" do
+      request = <<255, 250, 39, 1, 0>> <> "IPADDRESS" <> <<3>> <> "OTHER" <> <<255, 240>>
+      {:new_environ, :send, ["IPADDRESS", "OTHER"]} = Options.transform(request)
+    end
+
+    test "parsing a response" do
+      response = <<255, 250, 39, 0, 0>> <> "IPADDRESS" <> <<1>> <> "localhost" <> <<255, 240>>
+      {:new_environ, :is, [{"IPADDRESS", "localhost"}]} = Options.transform(response)
+    end
+  end
 end
