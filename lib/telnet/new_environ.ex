@@ -91,6 +91,9 @@ defmodule Telnet.NewEnviron do
 
       iex> NewEnviron.parse_send(<<3>> <> "IPADDRESS" <> <<0>> <> "OTHER")
       ["IPADDRESS", "OTHER"]
+
+      iex> NewEnviron.parse_send(<<0>>)
+      []
   """
   def parse_send(data) do
     data
