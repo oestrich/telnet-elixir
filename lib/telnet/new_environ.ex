@@ -51,6 +51,9 @@ defmodule Telnet.NewEnviron do
 
       iex> NewEnviron.encode(:is, [{"IPADDRESS", "localhost"}])
       <<255, 250, 39, 0, 0>> <> "IPADDRESS" <> <<1>> <> "localhost" <> <<255, 240>>
+
+      iex> NewEnviron.encode(:is, [])
+      <<255, 250, 39, 0, 255, 240>>
   """
   def encode(direction, data)
 
@@ -93,6 +96,12 @@ defmodule Telnet.NewEnviron do
       ["IPADDRESS", "OTHER"]
 
       iex> NewEnviron.parse_send(<<0>>)
+      []
+
+      iex> NewEnviron.parse_send(<<1>>)
+      []
+
+      iex> NewEnviron.parse_send(<<0, 1>>)
       []
   """
   def parse_send(data) do
