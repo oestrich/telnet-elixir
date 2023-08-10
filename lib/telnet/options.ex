@@ -20,10 +20,14 @@ defmodule Telnet.Options do
 
   @echo 1
   @term_type 24
+  @naws 31
   @line_mode 34
   @new_environ 39
   @charset 42
   @mssp 70
+  @mccp2 86
+  @mxp 91
+  @zmp 93
   @oauth 165
   @gmcp 201
 
@@ -284,6 +288,8 @@ defmodule Telnet.Options do
 
   def byte_to_option(@term_type), do: :term_type
 
+  def byte_to_option(@naws), do: :naws
+
   def byte_to_option(@line_mode), do: :line_mode
 
   def byte_to_option(@new_environ), do: :new_environ
@@ -291,6 +297,12 @@ defmodule Telnet.Options do
   def byte_to_option(@charset), do: :charset
 
   def byte_to_option(@mssp), do: :mssp
+
+  def byte_to_option(@mccp2), do: :mccp2
+
+  def byte_to_option(@mxp), do: :mxp
+
+  def byte_to_option(@zmp), do: :zmp
 
   def byte_to_option(@oauth), do: :oauth
 
@@ -329,6 +341,8 @@ defmodule Telnet.Options do
 
   def option_to_byte(:term_type), do: @term_type
 
+  def option_to_byte(:naws), do: @naws
+
   def option_to_byte(:line_mode), do: @line_mode
 
   def option_to_byte(:new_environ), do: @new_environ
@@ -336,6 +350,12 @@ defmodule Telnet.Options do
   def option_to_byte(:charset), do: @charset
 
   def option_to_byte(:mssp), do: @mssp
+
+  def option_to_byte(:mccp2), do: @mccp2
+
+  def option_to_byte(:mxp), do: @mxp
+
+  def option_to_byte(:zmp), do: @zmp
 
   def option_to_byte(:oauth), do: @oauth
 
